@@ -35,11 +35,12 @@ public final class DefaultButton: PopupDialogButton {}
 
 /// Represents a cancel button for the popup dialog
 public final class CancelButton: PopupDialogButton {
-
+    /*
     override public func setupView() {
         defaultTitleColor = UIColor.lightGray
         super.setupView()
     }
+    */
 }
 
 // MARK: destructive button
@@ -49,6 +50,18 @@ public final class DestructiveButton: PopupDialogButton {
 
     override public func setupView() {
         defaultTitleColor = UIColor.red
+        super.setupView()
+    }
+}
+
+
+// MARK: ActionButton button
+
+/// Represents the main action button for the popup dialog
+public final class ActionButton: PopupDialogButton {
+
+    override public func setupView() {
+        defaultTitleFont = UIFont.boldSystemFont(ofSize: defaultTitleFont.pointSize)
         super.setupView()
     }
 }
