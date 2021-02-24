@@ -27,12 +27,10 @@ import Foundation
 import UIKit
 
 // MARK: Default button
-
 /// Represents the default button for the popup dialog
 public final class DefaultButton: PopupDialogButton {}
 
 // MARK: Cancel button
-
 /// Represents a cancel button for the popup dialog
 public final class CancelButton: PopupDialogButton {
 
@@ -43,7 +41,6 @@ public final class CancelButton: PopupDialogButton {
 }
 
 // MARK: destructive button
-
 /// Represents a destructive button for the popup dialog
 public final class DestructiveButton: PopupDialogButton {
 

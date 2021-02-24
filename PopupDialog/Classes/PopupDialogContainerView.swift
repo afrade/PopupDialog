@@ -138,6 +138,9 @@ final public class PopupDialogContainerView: UIView {
     
     // The preferred width for iPads
     fileprivate let preferredWidth: CGFloat
+    fileprivate lazy var preferredPadding: CGFloat = {
+        return (self.frame.size.width - self.preferredWidth)/2
+        }()
 
     // MARK: - Constraints
 
@@ -170,11 +173,11 @@ final public class PopupDialogContainerView: UIView {
         var constraints = [NSLayoutConstraint]()
 
         // Shadow container constraints
+        let metrics = ["preferredWidth": preferredWidth, "preferredPadding": preferredPadding]
         if UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad {
-            let metrics = ["preferredWidth": preferredWidth]
             constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-(>=40)-[shadowContainer(==preferredWidth@900)]-(>=40)-|", options: [], metrics: metrics, views: views)
         } else {
-            constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-(>=10,==20@900)-[shadowContainer(<=340,>=300)]-(>=10,==20@900)-|", options: [], metrics: nil, views: views)
+            constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|-(>=25,==preferredPadding@900)-[shadowContainer(>=270,<=preferredWidth)]-(>=25,==preferredPadding@900)-|", options: [], metrics: metrics, views: views)
         }
         constraints += [NSLayoutConstraint(item: shadowContainer, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0)]
         centerYConstraint = NSLayoutConstraint(item: shadowContainer, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)

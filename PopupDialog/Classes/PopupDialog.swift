@@ -71,6 +71,10 @@ final public class PopupDialog: UIViewController {
 
     /// Whether or not to shift view for keyboard display
     public var keyboardShiftsView = true
+    
+    /// The present completion handler
+    fileprivate var onPresent: (() -> Void)?
+
 
     // MARK: - Initializers
 
@@ -91,17 +95,18 @@ final public class PopupDialog: UIViewController {
      - returns: Popup dialog default style
      */
     @objc public convenience init(
-                title: String?,
-                message: String?,
-                image: UIImage? = nil,
-                buttonAlignment: NSLayoutConstraint.Axis = .vertical,
-                transitionStyle: PopupDialogTransitionStyle = .bounceUp,
-                preferredWidth: CGFloat = 340,
-                tapGestureDismissal: Bool = true,
-                panGestureDismissal: Bool = true,
-                hideStatusBar: Bool = false,
-                completion: (() -> Void)? = nil) {
-
+        title: String?,
+        message: String?,
+        image: UIImage? = nil,
+        buttonAlignment: NSLayoutConstraint.Axis = .vertical,
+        transitionStyle: PopupDialogTransitionStyle = .bounceUp,
+        preferredWidth: CGFloat = 340,
+        tapGestureDismissal: Bool = true,
+        panGestureDismissal: Bool = true,
+        hideStatusBar: Bool = false,
+        onPresent: (() -> Void)? = nil,
+        completion: (() -> Void)? = nil) {
+        
         // Create and configure the standard popup dialog view
         let viewController = PopupDialogDefaultViewController()
         viewController.titleText   = title
@@ -116,6 +121,7 @@ final public class PopupDialog: UIViewController {
                   tapGestureDismissal: tapGestureDismissal,
                   panGestureDismissal: panGestureDismissal,
                   hideStatusBar: hideStatusBar,
+                  onPresent: onPresent,
                   completion: completion)
     }
 
@@ -141,11 +147,13 @@ final public class PopupDialog: UIViewController {
         tapGestureDismissal: Bool = true,
         panGestureDismissal: Bool = true,
         hideStatusBar: Bool = false,
+        onPresent: (() -> Void)? = nil,
         completion: (() -> Void)? = nil) {
 
         self.viewController = viewController
         self.preferredWidth = preferredWidth
         self.hideStatusBar = hideStatusBar
+        self.onPresent = onPresent
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
 
@@ -205,6 +213,8 @@ final public class PopupDialog: UIViewController {
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        onPresent?()
         
         statusBarShouldBeHidden = hideStatusBar
         UIView.animate(withDuration: 0.15) {
